@@ -9,4 +9,37 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  
+  <context-param> <!-- ServletContext로부터 얻음 -->
+  	<param-name>jdbcUrl</param-name>
+<!--   	<param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value> -->
+	<param-value>jdbc:oracle:thin:@mydb501_high?TNS_ADMIN=C:/Users/eunzi/Documents/Wallet_mydb501</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>jdbcUser</param-name>
+  	<param-value>mydb06</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>jdbcPassword</param-name>
+  	<param-value>adminAdmin12</param-value>
+  </context-param>
+  
+  
+  <servlet>
+  	<servlet-name>ControllerUsingURI</servlet-name>
+  	<servlet-class>mvc.controller.ControllerUsingURI</servlet-class>
+  	<init-param> <!-- ServletConfig로부터 얻음 -->
+  		<param-name>configFile</param-name> <!-- 설정 파일 -->
+  		<param-value>/WEB-INF/commandHandlerURI.properties</param-value>
+  	</init-param>
+  	<load-on-startup>1</load-on-startup> <!-- 서블릿 객체 생성, init() 실행 -->
+  </servlet>
+  
+  <servlet-mapping>
+  	<servlet-name>ControllerUsingURI</servlet-name>
+  	<url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
