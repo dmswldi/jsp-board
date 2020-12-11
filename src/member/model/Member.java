@@ -40,4 +40,8 @@ public class Member {
 		return password.equals(pwd);
 	}
 	
+	public void changePassword(String newPwd) {// 사실 setPassword()랑 똑같음
+		this.password = newPwd;
+	}
+	
 }

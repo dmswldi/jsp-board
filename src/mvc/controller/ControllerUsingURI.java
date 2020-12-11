@@ -22,7 +22,7 @@ import mvc.command.NullHandler;
 
 public class ControllerUsingURI extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String prefix = "/WEB-INF/view/";// 앞에 / 안 붙였다고 에러나냐 경로 똑같아 보이는데??????????
+	private String prefix = "/WEB-INF/view/";// 앞에 / 붙여야 app기준 상대경로!!!
 	private String suffix = ".jsp";
 	private Map<String, CommandHandler> map;// 어차피 null, properties로 map 만들기<경로, 핸들러>
        

@@ -12,7 +12,7 @@ public class JoinService {
 	private MemberDao memberDao = new MemberDao();
 	
 	public void join(JoinRequest joinReq) {// 하나의 트랜잭션
-		Connection con = null; // 다른 블럭? try with resource에서 () {}는 다른 블럭?
+		Connection con = null;
 		// 같은 커넥션 내에서 commmit | rollback -> connection 공유
 		try {
 			con = ConnectionProvider.getConnection();

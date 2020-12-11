@@ -64,4 +64,44 @@ public class MemberDao {
 			jdbcUtil.close(pstmt);
 		}
 	}
+	
+	public void update(Connection con, Member member) throws SQLException {
+		String sql = "UPDATE member "
+				+ "SET name = ?, password = ? "
+				+ "WHERE memberid = ?";
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, member.getName());
+			pstmt.setString(2, member.getPassword());
+			pstmt.setString(3, member.getId());
+			
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbcUtil.close(pstmt);
+		}
+	}
+	
+	public void delete(Connection con, String id) {
+		String sql = "DELETE member "// 띄어쓰기를 잘하자
+				+ "WHERE memberid = ?";
+		
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.executeUpdate();
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			jdbcUtil.close(pstmt);
+		}
+	}
+	
 }

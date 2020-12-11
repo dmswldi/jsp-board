@@ -12,18 +12,20 @@
   
   <context-param> <!-- ServletContext로부터 얻음 -->
   	<param-name>jdbcUrl</param-name>
-<!--   	<param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value> -->
-	<param-value>jdbc:oracle:thin:@mydb501_high?TNS_ADMIN=C:/Users/eunzi/Documents/Wallet_mydb501</param-value>
+  	<param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
+<!-- 	<param-value>jdbc:oracle:thin:@mydb501_high?TNS_ADMIN=C:/Users/eunzi/Documents/Wallet_mydb501</param-value> -->
   </context-param>
   
   <context-param>
   	<param-name>jdbcUser</param-name>
-  	<param-value>mydb06</param-value>
+<!--   	<param-value>mydb06</param-value> -->
+	<param-value>c##mydbms</param-value>
   </context-param>
   
   <context-param>
   	<param-name>jdbcPassword</param-name>
-  	<param-value>adminAdmin12</param-value>
+<!--   	<param-value>adminAdmin12</param-value> -->
+	<param-value>admin</param-value>
   </context-param>
   
   
@@ -41,5 +43,17 @@
   	<servlet-name>ControllerUsingURI</servlet-name>
   	<url-pattern>*.do</url-pattern>
   </servlet-mapping>
+  
+  
+  <filter>
+    <filter-name>LoginCheckedFilter</filter-name>
+    <filter-class>filter.LoginCheckedFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginCheckedFilter</filter-name>
+    <url-pattern>/changePwd.do</url-pattern>
+    <url-pattern>/removeMember.do</url-pattern>
+    <url-pattern>/article/write.do</url-pattern>
+  </filter-mapping>
   
 </web-app>
