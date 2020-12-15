@@ -19,12 +19,14 @@
 	<a href="logout.do">[로그아웃하기]</a> <%-- contextPath 이후로 href 작성!!! --%>
 	<a href="article/write.do">[게시글작성하기]</a> <%-- /article 하면 포트번호 뒤에 붙음 ,,,,, 절대 경로 --%>
 	<a href="article/list.do">[게시글목록보기]</a>
+	<a href="article/mylist.do">[내가쓴글목록보기]</a>
 	<a href="changePwd.do">[암호변경하기]</a>
 	<a href="removeMember.do">[회원탈퇴하기]</a>
  </u:isLogin>
  <u:notLogin>
 	<a href="join.do">[회원가입하기]</a>
 	<a href="login.do">[로그인하기]</a>
+	<a href="article/list.do">[게시글목록보기]</a>
  </u:notLogin>
 <%--
 <c:if test="${! empty authUser }">

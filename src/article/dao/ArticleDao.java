@@ -83,7 +83,7 @@ public class ArticleDao {
 	}
 	
 	
-	public List<Article> select(Connection conn, int pageNum, int size) throws SQLException {// pageNum부터 size개
+	public List<Article> select(Connection conn, int pageNum, int size) throws SQLException {// pageNum부터 size(5)개
 		String sql = "SELECT "
 				+ "rn, "
 				+ "article_no, "
@@ -122,13 +122,13 @@ public class ArticleDao {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (pageNum-1) * size + 1);// mysql: 0번 base, oracle: 1번 base
-			pstmt.setInt(2, pageNum * size);// pageNum부터 size개
+			pstmt.setInt(1, (pageNum-1) * size + 1);// mysql: 0번 base, oracle: 1번 base	1 6 11 / 1 11 
+			pstmt.setInt(2, pageNum * size);// pageNum부터 size개	5 10 15 / 10 20
 			
 			rs = pstmt.executeQuery();
 			List<Article> result = new ArrayList<>();
 			while(rs.next()) {
-				result.add(convertedArticle(rs));
+				result.add(convertArticle(rs));
 			}
 			
 			return result;
@@ -137,7 +137,7 @@ public class ArticleDao {
 		}
 	}
 	
-	private Article convertedArticle(ResultSet rs) throws SQLException {
+	private Article convertArticle(ResultSet rs) throws SQLException {
 		return new Article(rs.getInt("article_no"),
 				new Writer(
 						rs.getString("writer_id"), 
@@ -147,6 +147,138 @@ public class ArticleDao {
 						rs.getTimestamp("regdate"),
 						rs.getTimestamp("moddate"),
 						rs.getInt("read_cnt"));
+	}
+	
+	public Article selectById(Connection conn, int no) throws SQLException {
+		String sql = "SELECT * FROM article "
+				+ "WHERE article_no = ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			rs = pstmt.executeQuery();
+			Article article = null;
+			if(rs.next()) {
+				article = convertArticle(rs);
+			}
+			return article;
+		} finally {
+			jdbcUtil.close(rs, pstmt);
+		}
+	}
+	
+	public void increaseReadCount(Connection conn, int no) throws SQLException {
+		String sql = "UPDATE article SET read_cnt = read_cnt + 1 "
+				+ "WHERE article_no = ?";
+		
+		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setInt(1, no);
+			pstmt.executeUpdate();
+		}
+	}
+	
+	public int update(Connection conn, int no, String title) throws SQLException {
+		String sql = "UPDATE article "
+				+ "SET title = ?, moddate = SYSDATE "
+				+ "WHERE article_no = ?";
+		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setString(1, title);
+			pstmt.setInt(2, no);
+			
+			int cnt = pstmt.executeUpdate();
+			return cnt;
+		}
+	}
+
+
+	public int delete(Connection conn, int articleNumber) throws SQLException {
+		String sql = "DELETE article "
+				+ "WHERE article_no = ?";
+		
+		try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setInt(1, articleNumber);
+			// sql에 작성하지 않고 PreparedStatement 쓰는 이유가 뭐라고 하셨죠. 악용 금지...?
+			return pstmt.executeUpdate();
+		}
+		
+	}
+	
+	
+	// 추가
+	public int mySelectCount(Connection conn, Writer writer) throws SQLException {// 내가 쓴 총 게시글 수
+		String sql = "SELECT COUNT(*) FROM article "
+				+ "WHERE writer_id = ? "
+				+ "AND writer_name = ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			pstmt  = conn.prepareStatement(sql);
+			pstmt.setString(1, writer.getId());
+			pstmt.setString(2, writer.getName());
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			} else {
+				return 0;
+			}
+		} finally {
+			jdbcUtil.close(rs, pstmt);
+		}
+	}
+	
+	public List<Article> mySelect(Connection conn, int pageNum, int size, Writer writer) throws SQLException {
+		String sql = "SELECT "
+				+ "rn, "
+				+ "article_no, "
+				+ "writer_id, "
+				+ "writer_name, "
+				+ "title, "
+				+ "regdate, "
+				+ "moddate, "
+				+ "read_cnt "
+				+ "FROM ("
+				+ "	SELECT article_no, "
+				+ " 	   writer_id, "
+				+ "        writer_name, "
+				+ "        title, "
+				+ "        regdate, "
+				+ "        moddate, "
+				+ "        read_cnt, "
+				+ "        ROW_NUMBER() "
+				+ "          OVER ("
+				+ "            ORDER BY "
+				+ "            article_no "
+				+ "            DESC)"
+				+ "        rn "
+				+ "  FROM article "
+				+ "	WHERE writer_id = ? "
+				+ "	AND writer_name = ?"
+				+ ") WHERE rn "
+				+ "    BETWEEN ? AND ?";
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, writer.getId());
+			pstmt.setString(2, writer.getName());
+			pstmt.setInt(3, (pageNum-1) * size + 1);// 1 11 
+			pstmt.setInt(4, pageNum * size);// pageNum부터 size개	10 20
+			
+			rs = pstmt.executeQuery();
+			List<Article> result = new ArrayList<>();
+			while(rs.next()) {
+				result.add(convertArticle(rs));
+			}
+			
+			return result;
+		} finally {
+			jdbcUtil.close(rs, pstmt);
+		}
 	}
 	
 }
