@@ -25,6 +25,6 @@ public class MyListArticleHandler implements CommandHandler {
 		Writer writer = new Writer(authUser.getId(), authUser.getName());
 		ArticlePage articlePage = mylistArticleSvc.getArticlePage(pageNo, writer);
 		req.setAttribute("articlePage", articlePage);
-		return "mylistArticle";
+		return "listArticle";
 	}
 }

@@ -6,8 +6,8 @@
 	<td>
 		<form action="">
 			<input type="text" name="no" value="${reply.articleNum }" hidden=true />
-			<span style="display:inline-block;width:50px">${reply.memberid }</span>
-			<span style="display:inline-block;width:10px;color:lightgrey"> | </span>
+			<span style="display:inline-block; width:50px">${reply.memberid }</span>
+			<span style="display:inline-block; width:10px; color:lightgrey"> | </span>
 			<input id="body" type="text" value="${reply.body }" readonly style="border:none; width:70%" />
 			<span style="color:grey">${reply.regDate }</span>
 			<input id="submit_btn" type="submit" value="등록" class="btn btn-light p-0"/>
