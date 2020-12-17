@@ -10,7 +10,7 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav mr-auto"> <%-- mr-auto: 최대 너비 가짐 --%>
       <li class="nav-item active">
         <a class="nav-link" href="${root }/index.jsp"><i class="fas fa-home"></i> Home <span class="sr-only">(current)</span></a>
       </li>
@@ -28,7 +28,7 @@
     </ul>
     
     <u:notLogin>
-	    <ul class="navbar-nav">
+	    <ul class="navbar-nav"> <%-- 그래서 얘가 자동 float-right 됨 --%>
 	    	<li class="nav-item"><a href="${root }/join.do" class="nav-link">회원가입</a></li>
 	    	<li class="nav-item"><a href="${root }/login.do" class="nav-link">로그인</a></li>
 	    </ul>

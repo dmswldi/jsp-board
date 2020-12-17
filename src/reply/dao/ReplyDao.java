@@ -48,4 +48,15 @@ public class ReplyDao {
 		return list;
 	}
 
+	public int delete(Connection conn, int articleNo) throws SQLException {
+		String sql = "DELETE reply "
+				+ "WHERE article_no = ?";
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setInt(1, articleNo);
+			return pstmt.executeUpdate();
+		}
+		
+	}
+
 }

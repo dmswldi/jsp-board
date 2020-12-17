@@ -13,32 +13,41 @@
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
 $(function(){// jquery가 첫 form에만 적용되네...? ?????????
-	$('#submit_btn').hide();// 여기서 하면 고정되나? 흠
-	$('#modify_btn').css('cursor', 'pointer');
-	$('#delete_btn').css('cursor', 'pointer');
-	$('#modify_btn').hover(
+	$('.submit_btn').hide();// 여기서 하면 고정되나? 흠
+	$('.modify_btn').css('cursor', 'pointer');
+	$('.delete_btn').css('cursor', 'pointer');
+	$('.modify_btn').hover(
 			function(){
-				$('#modify_btn').css('text-decoration','underline');
+				$(this).css('text-decoration','underline');
 			}, function(){
-				$('#modify_btn').css('text-decoration','none');
+				$(this).css('text-decoration','none');
 			}
 	);
-	$('#delete_btn').hover(
+	$('.delete_btn').hover(
 			function(){
-				$('#delete_btn').css('text-decoration','underline');
+				$(this).css('text-decoration','underline');
 			}, function(){
-				$('#delete_btn').css('text-decoration','none');
+				$(this).css('text-decoration','none');
 			}
 	);
 	
 	
-	$('#modify_btn').click(function(){
-		$('#body').removeAttr("readonly");
-		$('#body').focus();
-		$('#delete_btn').hide();
-		$('#modify_btn').hide();
-		$('#submit_btn').show();//
+	$('.modify_btn').click(function(){
+		$(this).prev().prev().prev().removeAttr("readonly");
+		$(this).prev().prev().prev().focus();
+		$(this).next().hide();
+		$(this).hide();
+		$(this).prev().show();
+		
+		/*
+		$('.body').removeAttr("readonly");
+		$('.body').focus();
+		$('.delete_btn').hide();
+		$(this).hide();
+		$('.submit_btn').show();//
+		*/
 	});
+
 })
 </script>
 <script>
@@ -123,6 +132,7 @@ $(function(){
 
 
 
+<%--
 
 
 <div class="container">
@@ -167,5 +177,6 @@ $(function(){
 
 </table>
 </div>
+ --%>
 </body>
 </html>
