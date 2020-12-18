@@ -10,21 +10,7 @@ import java.util.List;
 import reply.model.Reply;
 
 public class ReplyDao {
-
-	public void insert(Connection conn, String userId, int articleNo, String body) throws SQLException {
-		String sql = "INSERT INTO reply "
-				+ "(memberid, article_no, body, regdate) "
-				+ "VALUES (?, ?, ?, SYSDATE)";
-		
-		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
-			pstmt.setString(1, userId);
-			pstmt.setInt(2, articleNo);
-			pstmt.setString(3, body);
-			
-			pstmt.executeUpdate();
-		}
-	}
-
+	
 	public List<Reply> listReply(Connection conn, int articleNum) throws SQLException {
 		String sql = "SELECT replyid, memberid, article_no, body, regdate "
 				+ "FROM reply "
@@ -48,15 +34,45 @@ public class ReplyDao {
 		return list;
 	}
 
-	public int delete(Connection conn, int articleNo) throws SQLException {
-		String sql = "DELETE reply "
-				+ "WHERE article_no = ?";
+	
+	public void insert(Connection conn, String userId, int articleNo, String body) throws SQLException {
+		String sql = "INSERT INTO reply "
+				+ "(memberid, article_no, body, regdate) "
+				+ "VALUES (?, ?, ?, SYSDATE)";
 		
 		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
-			pstmt.setInt(1, articleNo);
+			pstmt.setString(1, userId);
+			pstmt.setInt(2, articleNo);
+			pstmt.setString(3, body);
+			
+			pstmt.executeUpdate();
+		}
+	}
+
+
+	public int delete(Connection conn, int replyid) throws SQLException {
+		String sql = "DELETE reply "
+				+ "WHERE replyid = ?";
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setInt(1, replyid);
+			
 			return pstmt.executeUpdate();
 		}
 		
+	}
+	
+	public int update(Connection conn, int replyid, String body) throws SQLException {
+		String sql = "UPDATE reply "
+				+ "SET body = ? "
+				+ "WHERE replyid = ?";
+		
+		try (PreparedStatement pstmt = conn.prepareStatement(sql)){
+			pstmt.setString(1, body);
+			pstmt.setInt(2, replyid);
+			
+			return pstmt.executeUpdate();
+		}
 	}
 
 }

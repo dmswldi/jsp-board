@@ -22,7 +22,7 @@ public class ReplyAddHandler implements CommandHandler {
 		addService.add(userId, articleNo, body);
 		
 		// 다시 readArticle로 forward, 댓글 보이게 테이블로!
-		req.getRequestDispatcher("/article/read.do?no=" + articleNo).forward(req, res);
+		res.sendRedirect(req.getContextPath() + "/article/read.do?no=" + articleNo);
 		return null;
 	}
 }

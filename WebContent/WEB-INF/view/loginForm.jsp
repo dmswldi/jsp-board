@@ -37,9 +37,9 @@
 			    	  <small class="form-text text-muted">암호를 입력하세요.</small>
 			      </c:if>
 			  </div>
-			  <button class="btn btn-primary">로그인</button>
-			  
+			  <button class="btn btn-primary float-right">로그인</button> <%-- margin으로 처리? --%>
 			</form>
+			<a href="${root }/Findpw.do" class="btn btn-light">비밀번호 찾기</a>
 		</div>
 		<div class="col-3"></div>
 	</div>

@@ -22,11 +22,11 @@ public class ReadArticleHandler implements CommandHandler {
 		String noVal = req.getParameter("no");
 		int articleNum = Integer.parseInt(noVal);
 		
-		try {
+		try {// article 상세정보 읽을 때
 			ArticleData articleData = readService.getArticle(articleNum, true);
-			List<Reply> replyList = replyService.getReplyList(articleNum);
+			List<Reply> replyList = replyService.getReplyList(articleNum);// 해당 article의 댓글 얻어서
 			req.setAttribute("articleData", articleData);
-			req.setAttribute("replyList", replyList);
+			req.setAttribute("replyList", replyList);// req에 담음
 			return "readArticle";
 		} catch(ArticleNotFoundException | ArticleContentNotFoundException e) {
 			req.getServletContext().log("no article", e);

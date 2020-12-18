@@ -6,6 +6,7 @@ CREATE TABLE member (
 );
 
 SELECT * FROM member;
+commit;
 
 DROP TABLE article;
 CREATE TABLE article (
@@ -41,3 +42,31 @@ SELECT COUNT(title) FROM article;-- 해당 칼럼의 null이 아닌 row 수
 
 INSERT INTO article (writer_id, writer_name, title, regdate, moddate, read_cnt)
 VALUES ('writer', 'id', 'name', sysdate, sysdate, 0);
+
+
+
+CREATE TABLE reply (
+    replyid NUMBER GENERATED AS IDENTITY,
+    memberid VARCHAR2(50) NOT NULL,
+    article_no NUMBER NOT NULL,
+    body VARCHAR2(1000) NOT NULL,
+    regdate DATE NOT NULL,
+    PRIMARY KEY (replyid)
+);
+INSERT INTO reply (memberid, article_no, body, regdate)
+VALUES (' ', 0, ' ', SYSDATE);
+
+
+SELECT * FROM reply;
+
+SELECT replyid, memberid, article_no, body, regdate
+FROM reply
+WHERE article_no=103
+ORDER BY replyid DESC;
+
+SELECT * FROM reply;
+UPDATE reply
+SET body = 'hello'
+WHERE replyid = 16;
+DELETE reply
+WHERE replyid = 16;

@@ -12,10 +12,32 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
-$(function(){// jquery가 첫 form에만 적용되네...? ?????????
-	$('.submit_btn').hide();// 여기서 하면 고정되나? 흠
+$(function(){
+	// 게시글
+	$('#deleteArticle_btn').click(function(){
+		var con = confirm("Are you Sure?");
+		if(con){
+			location.href="${root }/article/delete.do?no=${articleData.article.number }";
+		}
+	});
+	
+	// 댓글
+	var body = "";
+	
+	$('.submit_btn').hide();
+	$('.cancel_btn').hide();
+	$('.submit_btn').css('cursor', 'pointer');
 	$('.modify_btn').css('cursor', 'pointer');
 	$('.delete_btn').css('cursor', 'pointer');
+	$('.cancel_btn').css('cursor', 'pointer');
+	
+	$('.submit_btn').hover(
+			function(){
+				$(this).css('text-decoration','underline');
+			}, function(){
+				$(this).css('text-decoration','none');
+			}
+	);
 	$('.modify_btn').hover(
 			function(){
 				$(this).css('text-decoration','underline');
@@ -30,35 +52,45 @@ $(function(){// jquery가 첫 form에만 적용되네...? ?????????
 				$(this).css('text-decoration','none');
 			}
 	);
+	$('.cancel_btn').hover(
+			function(){
+				$(this).css('text-decoration','underline');
+			}, function(){
+				$(this).css('text-decoration','none');
+			}
+	);
 	
 	
 	$('.modify_btn').click(function(){
-		$(this).prev().prev().prev().removeAttr("readonly");
-		$(this).prev().prev().prev().focus();
+		$(this).hide();
 		$(this).next().hide();
-		$(this).hide();
-		$(this).prev().show();
-		
-		/*
-		$('.body').removeAttr("readonly");
-		$('.body').focus();
-		$('.delete_btn').hide();
-		$(this).hide();
-		$('.submit_btn').show();//
-		*/
+		$(this).siblings(".cancel_btn").show();
+		$(this).siblings(".form").find(".submit_btn").show();
+		$(this).siblings(".form").find(".body").removeAttr("readonly");
+		body = $(this).siblings(".form").find(".body").val();// 원래 댓글 변수에 저장
 	});
-
-})
-</script>
-<script>
-$(function(){
-	$('#deleteArticle_btn').click(function(){
+	
+	$('.delete_btn').click(function(){
 		var con = confirm("Are you Sure?");
 		if(con){
-			location.href="${root }/article/delete.do?no=${articleData.article.number }";
+			var no = $(this).siblings(".form").find(".no").val();
+			var id = $(this).siblings(".form").find(".id").val();
+			location.href = "${root}/reply/delete.do?no=" + no + "&id=" + id;///// articleNo, replyid 넘겨주기
 		}
 	});
-});
+	
+	$('.cancel_btn').click(function(){
+		$(this).hide();
+		$(this).prev().show();
+		$(this).siblings(".modify_btn").show();
+		$(this).siblings(".form").find(".submit_btn").hide();
+		$(this).siblings(".form").find(".body").attr("readonly", "true").val(body);// 댓글 원래대로(수정 전)
+	});
+
+	// closest 위, find 아래
+	
+	
+})
 </script>
 <style>
 .left {
