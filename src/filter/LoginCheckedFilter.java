@@ -42,6 +42,7 @@ public class LoginCheckedFilter implements Filter {
 		
 		// 로그아웃 상태
 		if(session == null || session.getAttribute("authUser") == null) {
+			session.setAttribute("link", request.getRequestURI());
 			response.sendRedirect(request.getContextPath() + "/login.do");
 		} else {
 			// 로그인 상태
